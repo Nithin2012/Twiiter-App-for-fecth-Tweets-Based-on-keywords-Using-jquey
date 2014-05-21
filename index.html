@@ -1,0 +1,44 @@
+<html>
+<head>
+    <title>Twitter Application</title>
+</head>
+<body><center><body bgcolor="#9933FF">
+   <div style="padding: 20px;">
+	<h3><font color="white">Enter the keywords</h3>
+       <font color="white"> <input id="query" type="text"/>
+        <input id="submit" type="button" value="Search" />
+    </div></center>
+    <div id="twt" style="padding: 20px;">
+      <h2> <font color="#33FF33"> tweets</h2>
+    </div>
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+    <script src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>
+    <script src="http://ajax.cdnjs.com/ajax/libs/backbone.js/0.9.9/backbone-min.js"></script>
+<script>
+function searchTwitter(query) {
+    $.ajax({
+        url: 'http://search.twitter.com/search.json?' + jQuery.param(query),
+        dataType: 'jsonp',
+        success: function(data) {
+            var twt = $('#twt');
+            twt.html('');
+            for (res in data['results']) {
+                twt.append('<div>' + data['results'][res]['from_user'] + ' wrote: <p>' + data['results'][res]['text'] + '</p></div><br />');
+        }
+        }
+    });
+}
+
+$(document).ready(function() {
+    $('#submit').click(function() {
+        var params = {
+            q: $('#query').val(),
+            rpp: 50
+        };
+       
+        searchTwitter(params);
+    });
+});
+</script>
+</body>
+</html>
